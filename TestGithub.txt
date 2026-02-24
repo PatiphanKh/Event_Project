@@ -1,3 +1,3 @@
 Test github from jirath
 Test Github for branch Equinox
-Test Pull Request
+Test Git pull request
