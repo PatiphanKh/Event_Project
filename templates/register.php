@@ -1,3 +1,4 @@
+<?php if(!empty($data['error'])) echo "<p style='color:red; font-weight:bold;'>".$data['error']."</p>"; ?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -15,42 +16,39 @@
             <input type="text" id="name" name="name" required>
         </div>
 
-        <div>
+        <div style="margin-top: 10px;">
             <label for="gender">เพศ:</label>
             <select id="gender" name="gender" required>
                 <option value="">-- กรุณาเลือก --</option>
-                <option value="male">ชาย</option>
-                <option value="female">หญิง</option>
-                <option value="other">อื่นๆ</option>
+                <option value="Male">ชาย</option>
+                <option value="Female">หญิง</option>
+                <option value="Other">อื่นๆ</option>
             </select>
         </div>
 
-        <div>
-            <label for="age">อายุ:</label>
-            <input type="number" id="age" name="age" min="1" max="100" required>
+        <div style="margin-top: 10px;">
+            <label for="birth_date">วันเกิด:</label>
+            <input type="date" id="birth_date" name="birth_date" required>
         </div>
 
-        <div>
+        <div style="margin-top: 10px;">
             <label for="email">อีเมล:</label>
             <input type="email" id="email" name="email" required>
         </div>
 
-        <div>
+        <div style="margin-top: 10px;">
             <label for="password">รหัสผ่าน:</label>
             <input type="password" id="password" name="password" required>
         </div>
 
-        <div>
-            <label for="phone">เบอร์โทรศัพท์:</label>
-            <input type="tel" id="phone" name="phone">
-        </div>
-
         <div style="margin-top: 20px;">
-            <button type="reset">ยกเลิก</button> <button type="submit">ยืนยันการสมัคร</button> </div>
+            <button type="reset">ยกเลิก</button>
+            <button type="submit">ยืนยันการสมัคร</button>
+        </div>
 
     </form>
 
-    <p>มีบัญชีอยู่แล้ว? <a href="/login">เข้าสู่ระบบที่นี่</a></p>
+    <p style="margin-top: 20px;">มีบัญชีอยู่แล้ว? <a href="/login">เข้าสู่ระบบที่นี่</a></p>
 
 </body>
 </html>
