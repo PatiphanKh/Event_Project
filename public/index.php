@@ -16,10 +16,25 @@ require_once INCLUDES_DIR . '/database.php';
 
 // เรียก database ฟังก์ชันเพื่อเชื่อมต่อฐานข้อมูล (ถ้าจำเป็น)
 
+// =========================================================
+// เพิ่มส่วนนี้: จัดการ URL ให้รองรับการรันผ่าน XAMPP (โฟลเดอร์ย่อย)
+// =========================================================
+$basePath = dirname($_SERVER['SCRIPT_NAME']); // หาที่อยู่โฟลเดอร์ปัจจุบัน
+$requestUri = $_SERVER['REQUEST_URI'];        // URL ที่ผู้ใช้พิมพ์เข้ามา
+
+// รับค่า URL แบบ Hybrid (รองรับทั้ง XAMPP และ VS Code PHP Server)
+if (isset($_GET['url'])) {
+    $url = $_GET['url']; // สำหรับคนรันผ่าน XAMPP (.htaccess)
+} else {
+    $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); // สำหรับคนรันผ่าน VS Code Extension
+}
+// =========================================================
 
 
 // ทุกครั้งที่มีการร้องขอเข้ามา ให้เรียกใช้ฟังก์ชัน dispatch
-dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+dispatch($url, $_SERVER['REQUEST_METHOD']);
+
+//dispatch($_SERVER['REQUEST_URI'], $url, $_SERVER['REQUEST_METHOD']);
 
 // ควบคุมการเข้าถึงหน้าเว็บด้วย session (ตัวอย่างการใช้งาน)
 // const PUBLIC_ROUTES = ['/', '/login'];
