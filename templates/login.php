@@ -1,33 +1,57 @@
-<?php if(isset($data['error'])) echo "<p style='color:red'>".$data['error']."</p>"; ?>
+<?php 
+// เช็คว่ามีข้อความ Error จากระบบหลังบ้านส่งมาหรือไม่ ถ้ามีให้เด้งแจ้งเตือน
+if(!empty($data['error'])) {
+    echo "<script>alert('".$data['error']."');</script>"; 
+}
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title><?= $data['title'] ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $data['title'] ?? 'เข้าสู่ระบบ' ?></title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-[#F2F2F2] font-sans h-screen flex flex-col">
 
-    <h1>เข้าสู่ระบบ (Login)</h1>
+    <?php include 'navbar.php'; ?>
 
-    <form action="" method="post">
+    <main class="flex-grow flex items-center justify-center p-4">
         
-        <div>
-            <label for="email">อีเมล:</label>
-            <input type="email" id="email" name="email" required>
+        <div class="bg-white p-10 rounded-3xl shadow-lg w-full max-w-md border-2 border-[#00D1FF]">
+            
+            <h2 class="text-3xl font-bold text-center mb-8">Login</h2>
+
+            <form action="" method="post" class="space-y-5">
+                
+                <div>
+                    <input type="email" name="email" placeholder="อีเมล" required
+                           class="w-full bg-[#E6E6E6] text-gray-800 px-5 py-3 rounded-xl outline-none focus:ring-2 focus:ring-[#00D1FF] transition">
+                </div>
+
+                <div>
+                    <input type="password" name="password" placeholder="รหัสผ่าน" required
+                           class="w-full bg-[#E6E6E6] text-gray-800 px-5 py-3 rounded-xl outline-none focus:ring-2 focus:ring-[#00D1FF] transition">
+                </div>
+
+                <div class="flex justify-center gap-6 pt-4">
+                    <button type="reset" class="bg-[#FF0000] text-white px-8 py-2 rounded-full font-bold hover:opacity-80 transition shadow-md">
+                        ยกเลิก
+                    </button>
+                    <button type="submit" class="bg-[#00FF00] text-black px-8 py-2 rounded-full font-bold hover:opacity-80 transition shadow-md">
+                        ยืนยัน
+                    </button>
+                </div>
+
+            </form>
+
+            <div class="text-center mt-6 text-xs text-gray-800 font-semibold">
+                ยังไม่มีบัญชี <a href="/register" class="text-blue-500 hover:underline">ลงทะเบียน</a>
+            </div>
+
         </div>
 
-        <div style="margin-top: 10px;">
-            <label for="password">รหัสผ่าน:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-
-        <div style="margin-top: 20px;">
-            <button type="submit">ยืนยัน (Login)</button>
-        </div>
-
-    </form>
-
-    <p>ยังไม่มีบัญชี? <a href="/register">ลงทะเบียนที่นี่</a></p>
+    </main>
 
 </body>
 </html>

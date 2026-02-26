@@ -12,8 +12,8 @@
 
     <header class="bg-[#6B8CFF] px-8 py-5 flex items-center justify-between">
         
-        <div class="text-white text-3xl">
-            LOGO ต้องใส่ไหมหว่า?
+        <div class="text-white text-3xl font-bold">
+            Project WEB
         </div>
 
         <div class="flex items-center bg-gray-200 rounded-full px-4 py-2 w-full max-w-xl mx-4">
