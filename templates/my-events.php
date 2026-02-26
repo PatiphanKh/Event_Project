@@ -32,6 +32,9 @@
                                 <td class="p-3"><?= date('d/m/Y H:i', strtotime($event['start_date'])) ?></td>
                                 <td class="p-3"><?= number_format($event['quantity']) ?></td>
                                 <td class="p-3 text-center">
+                                    <a href="/event-manage?id=<?= $event['eid'] ?>" class="btn btn-info btn-sm text-white">
+                                        <i class="bi bi-people"></i> จัดการผู้เข้าร่วม
+                                    </a>
                                     <a href="/event-detail?id=<?= $event['eid'] ?>" class="btn btn-sm btn-info text-white">ดู</a>
                                     <a href="/event-edit?id=<?= $event['eid'] ?>" class="btn btn-sm btn-warning text-dark">แก้ไข</a>
                                     <a href="/event-delete?id=<?= $event['eid'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('แน่ใจหรือไม่ว่าต้องการลบกิจกรรมนี้?');">ลบ</a>
