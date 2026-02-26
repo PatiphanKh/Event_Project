@@ -1,35 +1,34 @@
 <?php
-// 1. เชื่อมต่อฐานข้อมูล
-$conn = getConnection(); 
-$error = "";
 
-// 2. เช็คว่ามีการกดปุ่ม Login มาหรือไม่
+// ถ้าล็อกอินอยู่แล้ว (มี Session) ให้เด้งกลับไปหน้าแรกเลย
+if (isset($_SESSION['uid'])) {
+    header('Location: /');
+    exit;
+}
+
+$error = '';
+
+// ถ้ามีการกดปุ่ม "เข้าสู่ระบบ" (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
 
-    // 3. ค้นหาผู้ใช้จากอีเมลและรหัสผ่าน
-    $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-    $result = $conn->query($sql);
+    // เรียกฟังก์ชันใน user_model.php เพื่อเช็ก Database
+    $user = loginUser($email, $password);
 
-    if ($result->num_rows > 0) {
-        // ดึงข้อมูลผู้ใช้ออกมา
-        $user = $result->fetch_assoc();
+    if ($user) {
+        // ล็อกอินสำเร็จ! เก็บข้อมูลลง Session
+        $_SESSION['uid'] = $user['uid'];
+        $_SESSION['name'] = $user['name'];
         
-        // เก็บค่า uid (ตามที่เพื่อนออกแบบ) และ name ไว้ใน Session
-        $_SESSION['user_uid'] = $user['uid']; 
-        $_SESSION['user_name'] = $user['name'];
-        
-        // แจ้งเตือนและเด้งไปหน้าแรก
-        echo "<script>
-                alert('ยินดีต้อนรับคุณ " . $user['name'] . " เข้าสู่ระบบสำเร็จ!');
-                window.location.href = '/'; 
-              </script>";
+        // สั่งให้เด้ง (Redirect) ไปหน้าแรก
+        header('Location: /');
         exit;
     } else {
-        $error = "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
+        // ล็อกอินไม่สำเร็จ
+        $error = 'อีเมล หรือรหัสผ่านไม่ถูกต้อง!';
     }
 }
 
-// 4. แสดงหน้าฟอร์มปกติ
-renderView('login', ['title' => 'เข้าสู่ระบบ', 'error' => $error]);
+// ถ้าไม่ได้กด Submit หรือล็อกอินผิด ให้แสดงหน้าฟอร์ม Login พร้อมข้อความ Error (ถ้ามี)
+renderView('login', ['error' => $error]);

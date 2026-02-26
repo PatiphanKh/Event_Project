@@ -1,33 +1,46 @@
-<?php if(isset($data['error'])) echo "<p style='color:red'>".$data['error']."</p>"; ?>
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <title><?= $data['title'] ?></title>
-</head>
-<body>
+<?php include 'header.php'; ?>
 
-    <h1>เข้าสู่ระบบ (Login)</h1>
-
-    <form action="" method="post">
+<div class="flex-grow flex items-center justify-center p-4 min-h-[70vh]">
+    
+    <div class="bg-white p-10 rounded-3xl shadow-lg w-full max-w-md border-2 border-[#00D1FF]">
         
-        <div>
-            <label for="email">อีเมล:</label>
-            <input type="email" id="email" name="email" required>
+        <h2 class="text-3xl font-bold text-center mb-8">Login</h2>
+
+        <?php if(!empty($error)): ?>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl relative mb-6 text-center text-sm font-medium">
+                <?= htmlspecialchars($error) ?>
+            </div>
+        <?php endif; ?>
+
+        <form action="/login" method="POST" class="space-y-5">
+            
+            <div>
+                <input type="email" name="email" placeholder="อีเมล" required
+                       class="w-full bg-[#E6E6E6] text-gray-800 px-5 py-3 rounded-xl outline-none focus:ring-2 focus:ring-[#00D1FF] transition">
+            </div>
+
+            <div>
+                <input type="password" name="password" placeholder="รหัสผ่าน" required
+                       class="w-full bg-[#E6E6E6] text-gray-800 px-5 py-3 rounded-xl outline-none focus:ring-2 focus:ring-[#00D1FF] transition">
+            </div>
+
+            <div class="flex justify-center gap-6 pt-4">
+                <button type="reset" class="bg-[#FF0000] text-white px-8 py-2 rounded-full font-bold hover:opacity-80 transition shadow-md">
+                    ยกเลิก
+                </button>
+                <button type="submit" class="bg-[#00FF00] text-black px-8 py-2 rounded-full font-bold hover:opacity-80 transition shadow-md">
+                    ยืนยัน
+                </button>
+            </div>
+
+        </form>
+
+        <div class="text-center mt-6 text-xs text-gray-800 font-semibold">
+            ยังไม่มีบัญชี <a href="/register" class="text-blue-500 hover:underline">ลงทะเบียน</a>
         </div>
 
-        <div style="margin-top: 10px;">
-            <label for="password">รหัสผ่าน:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
+    </div>
 
-        <div style="margin-top: 20px;">
-            <button type="submit">ยืนยัน (Login)</button>
-        </div>
+</div>
 
-    </form>
-
-    <p>ยังไม่มีบัญชี? <a href="/register">ลงทะเบียนที่นี่</a></p>
-
-</body>
-</html>
+<?php include 'footer.php'; ?>

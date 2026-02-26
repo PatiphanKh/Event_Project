@@ -3,6 +3,10 @@
 declare(strict_types=1);
 session_start();
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 // กำหนดค่าคงที่สำหรับไดเรกทอรีต่างๆ ในโปรเจค
 const INCLUDES_DIR = __DIR__ . '/../includes';
 const ROUTE_DIR = __DIR__ . '/../routes';
@@ -34,7 +38,7 @@ if (isset($_GET['url'])) {
 // ทุกครั้งที่มีการร้องขอเข้ามา ให้เรียกใช้ฟังก์ชัน dispatch
 dispatch($url, $_SERVER['REQUEST_METHOD']);
 
-//dispatch($_SERVER['REQUEST_URI'], $url, $_SERVER['REQUEST_METHOD']);
+// dispatch($_SERVER['REQUEST_URI'], $url, $_SERVER['REQUEST_METHOD']);
 
 // ควบคุมการเข้าถึงหน้าเว็บด้วย session (ตัวอย่างการใช้งาน)
 // const PUBLIC_ROUTES = ['/', '/login'];
