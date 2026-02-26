@@ -1,57 +1,46 @@
 <?php include 'header.php'; ?>
 
-<div class="row justify-content-center mt-4">
-    <div class="col-md-8">
-        <div class="card shadow-sm">
-            <div class="card-body p-5">
-                <h2 class="card-title text-primary fw-bold mb-3"><?= htmlspecialchars($event['name']) ?></h2>
-                
-                <div class="mb-4 text-muted">
-                    <p class="mb-1"><i class="bi bi-calendar-event"></i> <strong>เริ่ม:</strong> <?= date('d/m/Y เวลา H:i น.', strtotime($event['start_date'])) ?></p>
-                    <p class="mb-1"><i class="bi bi-calendar-event-fill"></i> <strong>สิ้นสุด:</strong> <?= date('d/m/Y เวลา H:i น.', strtotime($event['end_date'])) ?></p>
-                    <p class="mb-1"><i class="bi bi-people-fill"></i> <strong>รับจำนวน:</strong> <?= number_format($event['quantity']) ?> คน</p>
-                </div>
-                
-                <hr>
-                
-                <h5 class="fw-bold mt-4 mb-3">รายละเอียดกิจกรรม</h5>
-                <p class="card-text" style="white-space: pre-line;">
-                    <?= htmlspecialchars($event['description']) ?>
-                </p>
-                
-                <div class="mt-5 text-center">
-                    <?php if (!isset($_SESSION['uid'])): ?>
-                        <a href="/login" class="btn btn-primary btn-lg px-5 me-2">เข้าสู่ระบบเพื่อเข้าร่วม</a>
-                    
-                    <?php elseif ($event['creator_uid'] == $_SESSION['uid']): ?>
-                        <button class="btn btn-secondary btn-lg px-5 me-2" disabled>คุณเป็นผู้สร้างกิจกรรมนี้</button>
+<div class="flex-grow flex items-center justify-center p-4 min-h-[80vh] py-10">
+    <div class="bg-white p-8 md:p-12 rounded-3xl shadow-lg w-full max-w-4xl border-2 border-[#00D1FF]">
+        
+        <h2 class="text-3xl md:text-4xl font-bold text-[#6B8CFF] mb-6"><?= htmlspecialchars($event['name']) ?></h2>
+        
+        <div class="bg-blue-50 p-6 rounded-2xl mb-8 space-y-3 text-gray-700 font-medium">
+            <p class="flex items-center gap-2"><span class="text-xl">🟢</span> <strong>เริ่ม:</strong> <?= date('d/m/Y เวลา H:i น.', strtotime($event['start_date'])) ?></p>
+            <p class="flex items-center gap-2"><span class="text-xl">🔴</span> <strong>สิ้นสุด:</strong> <?= date('d/m/Y เวลา H:i น.', strtotime($event['end_date'])) ?></p>
+            <p class="flex items-center gap-2"><span class="text-xl">👥</span> <strong>รับจำนวน:</strong> <?= number_format($event['quantity']) ?> คน</p>
+        </div>
+        
+        <h5 class="text-2xl font-bold mb-4 text-gray-800">รายละเอียดกิจกรรม</h5>
+        <p class="text-gray-600 leading-relaxed whitespace-pre-line mb-10 text-lg">
+            <?= htmlspecialchars($event['description']) ?>
+        </p>
+        
+        <div class="flex flex-col sm:flex-row justify-center gap-4 border-t pt-8">
+            <?php if (!isset($_SESSION['uid'])): ?>
+                <a href="/login" class="bg-[#00D1FF] text-black px-8 py-3 rounded-full font-bold hover:opacity-80 transition shadow-md text-center">เข้าสู่ระบบเพื่อเข้าร่วม</a>
+            
+            <?php elseif ($event['creator_uid'] == $_SESSION['uid']): ?>
+                <button class="bg-gray-400 text-white px-8 py-3 rounded-full font-bold cursor-not-allowed text-center">คุณเป็นผู้สร้างกิจกรรมนี้</button>
 
-                    <?php else: ?>
-                        <?php if (isset($joinStatus) && $joinStatus === 'pending'): ?>
-                            <button class="btn btn-warning btn-lg px-5 me-2" disabled>
-                                ⏳ รอการอนุมัติ
-                            </button>
-                        <?php elseif (isset($joinStatus) && $joinStatus === 'approved'): ?>
-                            <button class="btn btn-success btn-lg px-5 me-2" disabled>
-                                ✅ เข้าร่วมกิจกรรมแล้ว
-                            </button>
-                        <?php elseif (isset($joinStatus) && $joinStatus === 'rejected'): ?>
-                            <button class="btn btn-danger btn-lg px-5 me-2" disabled>
-                                ❌ คำขอถูกปฏิเสธ
-                            </button>
-                        <?php else: ?>
-                            <form action="/event-join" method="POST" class="d-inline">
-                                <input type="hidden" name="eid" value="<?= htmlspecialchars($event['eid']) ?>">
-                                <button type="submit" class="btn btn-success btn-lg px-5 me-2" onclick="return confirm('ต้องการส่งคำขอเข้าร่วมกิจกรรมนี้ใช่หรือไม่?');">
-                                    ขอเข้าร่วมกิจกรรม
-                                </button>
-                            </form>
-                        <?php endif; ?>
-                    <?php endif; ?>
+            <?php else: ?>
+                <?php if (isset($joinStatus) && $joinStatus === 'pending'): ?>
+                    <button class="bg-yellow-400 text-black px-8 py-3 rounded-full font-bold cursor-not-allowed shadow-md text-center">⏳ รอการอนุมัติ</button>
+                <?php elseif (isset($joinStatus) && $joinStatus === 'approved'): ?>
+                    <button class="bg-green-500 text-white px-8 py-3 rounded-full font-bold cursor-not-allowed shadow-md text-center">✅ เข้าร่วมกิจกรรมแล้ว</button>
+                <?php elseif (isset($joinStatus) && $joinStatus === 'rejected'): ?>
+                    <button class="bg-red-500 text-white px-8 py-3 rounded-full font-bold cursor-not-allowed shadow-md text-center">❌ คำขอถูกปฏิเสธ</button>
+                <?php else: ?>
+                    <form action="/event-join" method="POST" class="w-full sm:w-auto">
+                        <input type="hidden" name="eid" value="<?= htmlspecialchars($event['eid']) ?>">
+                        <button type="submit" class="w-full sm:w-auto bg-[#34F874] text-black px-8 py-3 rounded-full font-bold hover:opacity-80 transition shadow-md" onclick="return confirm('ต้องการส่งคำขอเข้าร่วมกิจกรรมนี้ใช่หรือไม่?');">
+                            ขอเข้าร่วมกิจกรรม
+                        </button>
+                    </form>
+                <?php endif; ?>
+            <?php endif; ?>
 
-                    <a href="/" class="btn btn-outline-secondary btn-lg px-4">กลับหน้าหลัก</a>
-                </div>
-            </div>
+            <a href="/" class="bg-gray-200 text-gray-800 px-8 py-3 rounded-full font-bold hover:bg-gray-300 transition shadow-sm text-center">กลับหน้าหลัก</a>
         </div>
     </div>
 </div>

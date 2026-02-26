@@ -1,54 +1,70 @@
 <?php include 'header.php'; ?>
 
-<div class="row align-items-center mt-4 mb-4">
-    <div class="col-md-6">
-        <h2>กิจกรรมทั้งหมด</h2>
-    </div>
-    <div class="col-md-6">
-        <form action="/" method="GET" class="d-flex">
-            <input type="text" name="search" class="form-control me-2" placeholder="ค้นหากิจกรรม..." value="<?= htmlspecialchars($searchQuery ?? '') ?>">
-            <button type="submit" class="btn btn-outline-primary">ค้นหา</button>
-        </form>
-    </div>
+<div class="flex flex-col md:flex-row justify-between items-center my-8 gap-4">
+    <h2 class="text-2xl md:text-3xl font-bold text-gray-800">กิจกรรมทั้งหมด</h2>
+    
+    <form action="/" method="GET" class="flex w-full md:w-1/2 lg:w-1/3 gap-2">
+        <input type="text" name="search" placeholder="ค้นหากิจกรรม..." 
+               value="<?= htmlspecialchars($searchQuery ?? '') ?>"
+               class="w-full bg-[#E6E6E6] text-gray-800 px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-[#00D1FF] transition">
+        <button type="submit" 
+                class="bg-[#00D1FF] text-black px-6 py-2 rounded-xl font-bold hover:opacity-80 transition shadow-sm whitespace-nowrap">
+            ค้นหา
+        </button>
+    </form>
 </div>
 
-<div class="row">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+    
     <?php if (empty($events)): ?>
-        <div class="col-12 text-center py-5">
-            <h5 class="text-muted">ยังไม่มีกิจกรรมในขณะนี้ ลองสร้างกิจกรรมแรกดูสิ!</h5>
+        <div class="col-span-full text-center py-16 bg-white rounded-3xl shadow-sm border border-dashed border-gray-300">
+            <h5 class="text-xl text-gray-500 font-medium mb-2">ยังไม่มีกิจกรรมในขณะนี้ </h5>
+            <p class="text-gray-400">ลองสร้างกิจกรรมแรกดูสิ!</p>
         </div>
     <?php else: ?>
+        
         <?php foreach ($events as $event): ?>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
-                    
-                    <?php if (!empty($event['cover_image'])): ?>
-                        <img src="<?= htmlspecialchars($event['cover_image']) ?>" class="card-img-top" alt="Cover Image" style="height: 200px; object-fit: cover;">
-                    <?php else: ?>
-                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center text-muted" style="height: 200px;">
-                            <span>ไม่มีรูปภาพ</span>
-                        </div>
-                    <?php endif; ?>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold" style="color: #6B8CFF;"><?= htmlspecialchars($event['name']) ?></h5>
-                        <p class="card-text text-muted mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                            <?= htmlspecialchars($event['description']) ?>
-                        </p>
-                        
-                        <div class="mt-auto">
-                            <p class="mb-1"><i class="bi bi-people-fill"></i> <strong>รับจำนวน:</strong> <?= number_format($event['quantity']) ?> คน</p>
-                            <p class="mb-3 text-success small">
-                                <strong>เริ่ม:</strong> <?= date('d/m/Y เวลา H:i น.', strtotime($event['start_date'])) ?>
-                            </p>
-                            <a href="/event-detail?id=<?= $event['eid'] ?>" class="btn w-100 fw-bold" style="background-color: #00D1FF; color: black; border-radius: 8px;">
-                                ดูรายละเอียด / เข้าร่วม
-                            </a>
-                        </div>
+            <div class="bg-white rounded-3xl shadow-md overflow-hidden flex flex-col hover:shadow-lg transition duration-300 border-2 border-transparent hover:border-[#00D1FF]">
+                
+                <?php if (!empty($event['cover_image'])): ?>
+                    <img src="<?= htmlspecialchars($event['cover_image']) ?>" alt="Cover Image" 
+                         class="w-full h-48 object-cover">
+                <?php else: ?>
+                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-400 font-medium">
+                        <span>ไม่มีรูปภาพ 📷</span>
                     </div>
+                <?php endif; ?>
+
+                <div class="p-6 flex flex-col flex-grow">
+                    <h5 class="text-xl font-bold text-[#6B8CFF] mb-2 line-clamp-1" title="<?= htmlspecialchars($event['name']) ?>">
+                        <?= htmlspecialchars($event['name']) ?>
+                    </h5>
+                    
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                        <?= htmlspecialchars($event['description']) ?>
+                    </p>
+                    
+                    <div class="mt-auto space-y-2 mb-5">
+                        <p class="text-sm text-gray-700 flex items-center gap-2">
+                            <span class="text-lg">👥</span> 
+                            <strong>รับสมัคร:</strong> <?= number_format($event['quantity']) ?> คน
+                        </p>
+                        <p class="text-sm text-green-600 flex items-center gap-2">
+                            <span class="text-lg">📅</span> 
+                            <strong>เริ่ม:</strong> <?= date('d/m/Y H:i น.', strtotime($event['start_date'])) ?>
+                        </p>
+                    </div>
+
+                    <a href="/event-detail?id=<?= $event['eid'] ?>" 
+                       class="block text-center w-full bg-[#00D1FF] text-black px-4 py-2.5 rounded-xl font-bold hover:opacity-80 transition shadow-sm mt-auto">
+                        ดูรายละเอียด / เข้าร่วม
+                    </a>
                 </div>
             </div>
         <?php endforeach; ?>
+        
     <?php endif; ?>
+
 </div>
 
 <?php include 'footer.php'; ?>
