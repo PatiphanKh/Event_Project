@@ -12,17 +12,10 @@
     </div>
 </div>
 
-<<<<<<< HEAD
-    <header class="bg-[#6B8CFF] px-8 py-5 flex items-center justify-between">
-        
-        <div class="text-white text-3xl font-bold">
-            Project WEB
-=======
 <div class="row">
     <?php if (empty($events)): ?>
         <div class="col-12 text-center py-5">
             <h5 class="text-muted">ยังไม่มีกิจกรรมในขณะนี้ ลองสร้างกิจกรรมแรกดูสิ!</h5>
->>>>>>> 0049ad538480f67298bc78651f4c65acbae33acc
         </div>
     <?php else: ?>
         <?php foreach ($events as $event): ?>
