@@ -44,3 +44,19 @@ function registerUser($name, $email, $password, $gender, $birth_date)
     
     return $stmt->execute();
 }
+
+function getUserById($uid)
+{
+    $conn = getConnection();
+
+    $stmt = $conn->prepare("SELECT uid, name, email FROM users WHERE uid = ? LIMIT 1");
+    $stmt->bind_param("i", $uid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result && $result->num_rows > 0) {
+        return $result->fetch_assoc();
+    }
+
+    return false;
+}
