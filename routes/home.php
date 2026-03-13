@@ -2,12 +2,14 @@
 
 // รับค่าคำค้นหา (ถ้ามีการพิมพ์ค้นหา)
 $searchQuery = $_GET['search'] ?? '';
+$dateFrom    = $_GET['date_from'] ?? '';
+$dateTo      = $_GET['date_to']   ?? '';
 
-// เรียกใช้ฟังก์ชัน getAllEvents (ที่เรามีอยู่แล้วใน event_model.php)
-$events = getAllEvents($searchQuery);
+$events = getAllEvents($searchQuery, $dateFrom, $dateTo);
 
-// ส่งข้อมูลที่ดึงมาได้ ไปแสดงผลที่หน้า template 
 renderView('home', [
-    'events' => $events,
-    'searchQuery' => $searchQuery
+    'events'      => $events,
+    'searchQuery' => $searchQuery,
+    'dateFrom'    => $dateFrom,
+    'dateTo'      => $dateTo,
 ]);

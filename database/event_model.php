@@ -3,24 +3,43 @@
 // ---------------------------------------------------------
 // 1. ฟังก์ชันสำหรับดึงข้อมูลกิจกรรมทั้งหมด (อัปเดต: ดึงรูปลงมาด้วยจาก event_imgs)
 // ---------------------------------------------------------
-function getAllEvents($searchQuery = '')
+function getAllEvents($searchQuery = '', $dateFrom = '', $dateTo = '')
 {
     $conn = getConnection();
-    
-    // เปลี่ยนชื่อตารางเป็น event_imgs และคอลัมน์เป็น img_path ให้ตรงกับของคุณ
+
     $sql = "SELECT e.*, 
             (SELECT img_path FROM event_imgs ei WHERE ei.eid = e.eid LIMIT 1) AS cover_image 
-            FROM events e ";
+            FROM events e WHERE 1=1 ";
+
+    $params = [];
+    $types  = '';
 
     if ($searchQuery !== '') {
-        $sql .= "WHERE e.name LIKE ? ORDER BY e.start_date ASC";
+        $sql .= "AND e.name LIKE ? ";
+        $params[] = "%" . $searchQuery . "%";
+        $types .= 's';
+    }
+
+    if ($dateFrom !== '') {
+        $sql .= "AND e.start_date >= ? ";
+        $params[] = $dateFrom . ' 00:00:00';
+        $types .= 's';
+    }
+
+    if ($dateTo !== '') {
+        $sql .= "AND e.start_date <= ? ";
+        $params[] = $dateTo . ' 23:59:59';
+        $types .= 's';
+    }
+
+    $sql .= "ORDER BY e.start_date ASC";
+
+    if (!empty($params)) {
         $stmt = $conn->prepare($sql);
-        $searchParam = "%" . $searchQuery . "%";
-        $stmt->bind_param("s", $searchParam);
+        $stmt->bind_param($types, ...$params);
         $stmt->execute();
         $result = $stmt->get_result();
     } else {
-        $sql .= "ORDER BY e.start_date ASC";
         $result = $conn->query($sql);
     }
 
@@ -30,7 +49,7 @@ function getAllEvents($searchQuery = '')
             $events[] = $row;
         }
     }
-    
+
     return $events;
 }
 

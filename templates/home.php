@@ -1,20 +1,45 @@
 <?php include 'header.php'; ?>
 
-<div class="flex flex-col md:flex-row justify-between items-center my-8 gap-4">
+<div class="flex flex-col gap-3 mx-4 mb-2">
     <h2 class="text-2xl md:text-3xl font-bold text-gray-800">กิจกรรมทั้งหมด</h2>
-    
-    <form action="/" method="GET" class="flex w-full md:w-1/2 lg:w-1/3 gap-2">
-        <input type="text" name="search" placeholder="ค้นหากิจกรรม..." 
+
+    <form action="/" method="GET" class="flex flex-col sm:flex-row flex-wrap gap-2 items-end">
+
+        <input type="text" name="search" placeholder="ค้นหากิจกรรม..."
                value="<?= htmlspecialchars($searchQuery ?? '') ?>"
-               class="w-full bg-[#E6E6E6] text-gray-800 px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-[#00D1FF] transition">
-        <button type="submit" 
+               class="flex-1 min-w-[180px] bg-[#E6E6E6] text-gray-800 px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-[#00D1FF] transition">
+
+        <div class="flex items-center gap-2">
+            <label class="text-sm font-bold text-gray-600 whitespace-nowrap">เริ่ม</label>
+            <input type="date" name="date_from"
+                   value="<?= htmlspecialchars($dateFrom ?? '') ?>"
+                   class="bg-[#E6E6E6] text-gray-800 px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-[#00D1FF] transition">
+        </div>
+
+        <div class="flex items-center gap-2">
+            <label class="text-sm font-bold text-gray-600 whitespace-nowrap">ถึง</label>
+            <input type="date" name="date_to"
+                   value="<?= htmlspecialchars($dateTo ?? '') ?>"
+                   class="bg-[#E6E6E6] text-gray-800 px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-[#00D1FF] transition">
+        </div>
+
+        <button type="submit"
                 class="bg-[#00D1FF] text-black px-6 py-2 rounded-xl font-bold hover:opacity-80 transition shadow-sm whitespace-nowrap">
             ค้นหา
         </button>
+
+        <?php if (!empty($searchQuery) || !empty($dateFrom) || !empty($dateTo)): ?>
+            <a href="/"
+               class="bg-gray-200 text-gray-700 px-5 py-2 rounded-xl font-bold hover:bg-gray-300 transition whitespace-nowrap">
+                ล้างตัวกรอง
+            </a>
+        <?php endif; ?>
+
     </form>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+<div class="min-h-screen px-4 py-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10 ">
     
     <?php if (empty($events)): ?>
         <div class="col-span-full text-center py-16 bg-white rounded-3xl shadow-sm border border-dashed border-gray-300">
@@ -51,7 +76,7 @@
                         </p>
                         <p class="text-sm text-green-600 flex items-center gap-2">
                             <span class="text-lg">📅</span> 
-                            <strong>เริ่ม:</strong> <?= date('d/m/Y H:i น.', strtotime($event['start_date'])) ?>
+                            <strong>เริ่ม:</strong> <?= date('d/m/Y', strtotime($event['start_date'])) ?>
                         </p>
                     </div>
 
@@ -66,5 +91,7 @@
     <?php endif; ?>
 
 </div>
+</div>
+
 
 <?php include 'footer.php'; ?>

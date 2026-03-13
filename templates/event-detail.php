@@ -6,8 +6,8 @@
         <h2 class="text-3xl md:text-4xl font-bold text-[#6B8CFF] mb-6"><?= htmlspecialchars($event['name']) ?></h2>
 
         <div class="bg-blue-50 p-6 rounded-2xl mb-8 space-y-3 text-gray-700 font-medium">
-            <p class="flex items-center gap-2"><span class="text-xl">🟢</span> <strong>เริ่ม:</strong> <?= date('d/m/Y เวลา H:i น.', strtotime($event['start_date'])) ?></p>
-            <p class="flex items-center gap-2"><span class="text-xl">🔴</span> <strong>สิ้นสุด:</strong> <?= date('d/m/Y เวลา H:i น.', strtotime($event['end_date'])) ?></p>
+            <p class="flex items-center gap-2"><span class="text-xl">🟢</span> <strong>เริ่ม:</strong> <?= date('d/m/Y เวลา ', strtotime($event['start_date'])) ?></p>
+            <p class="flex items-center gap-2"><span class="text-xl">🔴</span> <strong>สิ้นสุด:</strong> <?= date('d/m/Y เวลา ', strtotime($event['end_date'])) ?></p>
             <p class="flex items-center gap-2"><span class="text-xl">👥</span> <strong>รับจำนวน:</strong> <?= number_format($event['quantity']) ?> คน</p>
         </div>
 
@@ -22,7 +22,7 @@
 
             <?php elseif ($event['creator_uid'] == $_SESSION['uid']): ?>
                 <button class="bg-gray-400 text-white px-8 py-3 rounded-full font-bold cursor-not-allowed text-center">คุณเป็นผู้สร้างกิจกรรมนี้</button>
-
+                 <a href="/event-edit?id=<?= (int)$event['eid'] ?>" class="bg-green-500 text-white px-8 py-3 rounded-full font-bold hover:bg-green-600 transition shadow-sm text-center">แก้ไขกิจกรรม</a>
             <?php else: ?>
                 <?php if (isset($joinStatus) && $joinStatus === 'pending'): ?>
                     <button class="bg-yellow-400 text-black px-8 py-3 rounded-full font-bold cursor-not-allowed shadow-md text-center">⏳ รอการอนุมัติ</button>
@@ -51,6 +51,7 @@
             <?php endif; ?>
 
             <a href="/" class="bg-gray-200 text-gray-800 px-8 py-3 rounded-full font-bold hover:bg-gray-300 transition shadow-sm text-center">กลับหน้าหลัก</a>
+           
         </div>
     </div>
 </div>

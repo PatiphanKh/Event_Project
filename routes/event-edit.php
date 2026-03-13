@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // อัปโหลดรูปภาพ (เพิ่มเข้าไปใหม่)
         // ใช้ __DIR__ . '/../' เพื่อถอยหลังออกมา 1 โฟลเดอร์ ให้อยู่หน้าสุดของโปรเจกต์
-        $uploadDir = __DIR__ . '/../uploads/'; 
+        $uploadDir = 'uploads/'; 
         
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);

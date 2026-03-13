@@ -1,7 +1,8 @@
 <?php include 'header.php'; ?>
 
-<div class="my-8">
-    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+
+<div class="mx-4 mb-8 min-h-screen">
+    <div class="flex flex-col sm:flex-row justify-between items-center">
         <h3 class="text-2xl font-bold text-[#6B8CFF]">จัดการผู้เข้าร่วม: <span class="text-gray-800"><?= htmlspecialchars($event['name']) ?></span></h3>
         <a href="/my-events" class="bg-gray-200 text-gray-800 px-6 py-2.5 rounded-xl font-bold hover:bg-gray-300 transition shadow-sm whitespace-nowrap">กลับหน้ารวมกิจกรรม</a>
     </div>
@@ -59,7 +60,7 @@
             </table>
         </div>
     </div>
-</div>
+
 <?php if (!empty($otpModal['show'])): ?>
     <div id="otpModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
         <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
@@ -84,4 +85,5 @@
         </div>
     </div>
 <?php endif; ?>
+</div>
 <?php include 'footer.php'; ?>
