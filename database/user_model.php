@@ -5,7 +5,7 @@ function loginUser($email, $password)
 {
     $conn = getConnection();
     
-    // ดึงข้อมูล User ด้วยอีเมลมาก่อน
+    // ดึงอีเมลไปหาใน users ก่อน
     $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -14,7 +14,7 @@ function loginUser($email, $password)
     if ($result && $result->num_rows > 0) {
         $user = $result->fetch_assoc();
         
-        // 💡 เช็กว่ารหัสผ่านที่พิมพ์มา (Plain text) ตรงกับ Hash ใน Database ไหม
+        // 💡 เช็กว่ารหัสผ่านที่พิมพ์มา ตรงกับ Hash ใน Database ไหม
         if (password_verify($password, $user['password'])) {
             return $user; // รหัสถูก คืนค่าข้อมูล User
         }
@@ -30,7 +30,7 @@ function registerUser($name, $email, $password, $gender, $birth_date)
 {
     $conn = getConnection();
     
-    // 💡 นำรหัสผ่านที่รับมา เข้ากระบวนการ Hash เพื่อความปลอดภัย
+    // นำรหัสผ่านที่รับมา เข้ากระบวนการ Hash เพื่อความปลอดภัย
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     
     $stmt = $conn->prepare("INSERT INTO users (name, email, password, gender, birth_date) VALUES (?, ?, ?, ?, ?)");
@@ -39,7 +39,7 @@ function registerUser($name, $email, $password, $gender, $birth_date)
         die("❌ SQL Error: " . $conn->error);
     }
 
-    // 💡 เปลี่ยนมาใช้ $hashedPassword บันทึกลงฐานข้อมูลแทน $password ปกติ
+    //  เปลี่ยนมาใช้ $hashedPassword บันทึกลงฐานข้อมูลแทน $password ปกติ
     $stmt->bind_param("sssss", $name, $email, $hashedPassword, $gender, $birth_date);
     
     return $stmt->execute();
